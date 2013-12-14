@@ -31,14 +31,14 @@ namespace gradecalc2
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 process();
-            }
-            catch
-            {
-                richTextBox2.Text = "Invalid input.";
-            }
+            //}
+            //catch
+            //{
+            //    richTextBox2.Text = "Invalid input.";
+            //}
         }
 
         private void process()
@@ -82,8 +82,16 @@ namespace gradecalc2
                 if (equalsIndex < 0)
                 {
                     total = 0.0f;
-                    string scoreString = parts[2].Split(' ')[1];
-                    if (!Single.TryParse(scoreString, out actual))
+                    string[] scoreStringParts = parts[2].Split(' ');
+
+                    if (scoreStringParts.Length > 1)
+                    {
+                        string scoreString = scoreStringParts[1];
+
+                        if (!Single.TryParse(scoreString, out actual))
+                            actual = 0.0f;
+                    }
+                    else
                         actual = 0.0f;
                 }
                 else
