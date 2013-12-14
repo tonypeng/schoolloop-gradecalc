@@ -75,16 +75,27 @@ namespace gradecalc2
                     continue;
 
                 int equalsIndex = score.IndexOf('=');
-                score = score.Substring(0, equalsIndex);
-                string[] scoreParts = score.Split('/');
 
-                float actual;
-                float total;
+                float actual = 0.0f;
+                float total = 0.0f;
 
-                if (!Single.TryParse(scoreParts[0].Trim(), out actual))
-                    actual = 0.0f;
-                if (!Single.TryParse(scoreParts[1].Trim(), out total))
+                if (equalsIndex < 0)
+                {
                     total = 0.0f;
+                    string scoreString = parts[2].Split(' ')[1];
+                    if (!Single.TryParse(scoreString, out actual))
+                        actual = 0.0f;
+                }
+                else
+                {
+                    score = score.Substring(0, equalsIndex);
+                    string[] scoreParts = score.Split('/');
+
+                    if (!Single.TryParse(scoreParts[0].Trim(), out actual))
+                        actual = 0.0f;
+                    if (!Single.TryParse(scoreParts[1].Trim(), out total))
+                        total = 0.0f;
+                }
 
                 totalPoints[title] += total;
                 actualPoints[title] += actual;
@@ -236,7 +247,6 @@ namespace gradecalc2
                 currentTotalPoints.Add(res.Text, 0.0f);
                 currentActualPoints.Add(res.Text, 0.0f);
             }
-            else if (currentTotalPoints[res.Text] < 0.0) currentTotalPoints[res.Text] = currentActualPoints[res.Text] = 0;
 
             currentTotalPoints[res.Text] += Single.Parse(res2.Text);
             currentActualPoints[res.Text] += Single.Parse(res3.Text);
